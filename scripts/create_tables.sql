@@ -1,0 +1,42 @@
+CREATE DATABASE sistema_cursos;
+USE sistema_cursos;
+
+CREATE TABLE cursos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT NOT NULL,
+    duracion INT NOT NULL,
+    isActivo TINYINT DEFAULT 1 NOT NULL,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE TABLE estudiantes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombres VARCHAR(50) NOT NULL,
+    apellidos VARCHAR(50) NOT NULL,
+    nro_identificacion VARCHAR(10) NOT NULL UNIQUE,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    celular VARCHAR(10),
+    isActivo TINYINT DEFAULT 1 NOT NULL,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE TABLE status_inscripciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE inscripciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    curso_id INT NOT NULL,
+    estudiante_id INT NOT NULL,
+    fecha_inscripcion DATE NOT NULL, 
+    status_id INT NOT NULL,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, 
+    fecha_modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL, 
+    FOREIGN KEY (curso_id) REFERENCES cursos(id) ON DELETE CASCADE,
+    FOREIGN KEY (estudiante_id) REFERENCES estudiantes(id) ON DELETE CASCADE,
+    FOREIGN KEY (status_id) REFERENCES status_inscripciones(id) ON DELETE RESTRICT
+);
